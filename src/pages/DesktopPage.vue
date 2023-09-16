@@ -1,16 +1,23 @@
 <template>
   <AuthValidation />
+  <OrdersTable />
   <div class="home">
-    DesktopPage
   </div>
 </template>
   
 <script>
 import AuthValidation from '@/components/AuthValidation.vue'
+import OrdersTable from "@/components/OrdersTable.vue"
+
 export default {
+  data(){
+    return {
+    }
+  },
   name: 'DesktopPage',
   components: {
-    AuthValidation
+    AuthValidation,
+    OrdersTable
   }
 }
 </script>
