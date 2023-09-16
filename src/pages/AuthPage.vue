@@ -4,9 +4,9 @@
     <AuthValidation />
     <div class="home">
         <div v-show="!$store.state.auth">
-            <input type="text" placeholder="Введите логин" @input="login = $event.target.value" :value="login" />
+            <input type="text" placeholder="Введите логин" @input="login = $event.target.value" :value="login" v-on:keyup.enter="auth" />
             <p></p>
-            <input type="text" placeholder="Введите пароль" @input="password = $event.target.value" :value="password">
+            <input type="text" placeholder="Введите пароль" @input="password = $event.target.value" :value="password" v-on:keyup.enter="auth" />
             <p></p>
             <button @click="auth">Войти</button>
         </div>
@@ -70,6 +70,7 @@ export default {
                     this.setCookie("token", JSON.parse(responce.data).accessToken), 
                     this.setCookie("login", this.login), this.$store.state.auth=true, 
                     this.$store.state.login = this.login
+                    this.$router.push({ path: "/desktop" })
                 }, 1)
                 .catch((error) => {
                     this.exitFromSystem(), 

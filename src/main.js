@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
+import Vue from 'vue'
+
 
 const app = createApp(App)
 app.component('EasyDataTable', Vue3EasyDataTable)

@@ -1,37 +1,41 @@
 <template>
   <div class="home">
-    <strong>Заказы на производство</strong>
+    <strong>Расходные накладные</strong>
   </div>
-  <EasyDataTable :headers="headers" :items="items" @click-row="showRow" show-index/>
-  {{ $store.state.selectedOrderId }}
+  <EasyDataTable :headers="headers" :items="items" @click-row="showRow" show-index />
 </template>
   
 <script>
 import axios from 'axios'
+
 export default {
   data() {
     return {
       headers: [],
       itemsAll: [],
       items: [],
-      selectedOrder: {},
+
     }
   },
-  name: 'OrdersTable',
+  name: 'ShipmentsTable',
   components: {
+
+  },
+  props: {
+    selectedOrderId: {
+      type: String
+    }
+  },
+  watch:
+  {
+    selectedOrderId() {
+      this.filterShipmentsTable()
+    }
   },
   methods: {
     showRow(item) {
-            //let id = this.itemsAll[item.indexInCurrentPage - 1].id
-            let id = ''
-            this.itemsAll.forEach((itemI) => {
-              if(itemI.ЗаказНаПроизводство === item.ЗаказНаПроизводство){
-                id = itemI.id
-              }
-            }
-            )
-            this.$emit('selected', id)
-        },
+      console.log(item)
+    },
     getCookie(name) {
       const cDecoded = decodeURIComponent(document.cookie)
       const cArray = cDecoded.split("; ")
@@ -44,11 +48,17 @@ export default {
       })
       return result
     },
+    filterShipmentsTable() {
+      console.log(this.selectedOrderId)
+      let itemsToShow = []
+      this.itemsAll.forEach((item) => {if (item.id === this.selectedOrderId) {itemsToShow.push(item)}})
+      this.items = itemsToShow
+    }
   },
   mounted() {
     console.log("Loading orders...")
     if (this.$store.state.auth) {
-      const uri = 'http://127.0.0.1:8000/orders'
+      const uri = 'http://127.0.0.1:8000/shipments'
       const token = this.getCookie("token")
       axios.get(uri, { headers: { Authorization: "Bearer " + token } })
         .then(responce => {
@@ -61,26 +71,14 @@ export default {
           let headersTemp = []
           let headersOnlyToShow = []
           columns.forEach((column) => {
-            if (column!="id"){
-            headersTemp.push({ text: column, value: column, sortable: true })
-            headersOnlyToShow.push(column)
-          }
-          }
-          )
-
-          let itemsTemp = []
-          rows.forEach((row) => {
-            let line = {}
-            headersOnlyToShow.forEach((column) => {
-              line[column] = row[column]
+            if (column != "id") {
+              headersTemp.push({ text: column, value: column, sortable: true })
+              headersOnlyToShow.push(column)
             }
-            )
-            itemsTemp.push(line)
           }
           )
 
           this.headers = headersTemp
-          this.items = itemsTemp
           this.itemsAll = rows
         }, 1)
         .catch((error) => {

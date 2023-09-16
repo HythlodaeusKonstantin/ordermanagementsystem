@@ -1,7 +1,6 @@
 <template>
   <AuthValidation />
   <div class="home">
-    Home
   </div>
 </template>
   
