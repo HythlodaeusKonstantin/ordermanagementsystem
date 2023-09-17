@@ -2,7 +2,7 @@
     <div>
         <div>
             <span>Дата заказа</span>
-            <input type="date" placeholder="Дата заказа">
+            <input type="date" placeholder="Дата заказа" @change="selectedDate = $event.target.value" :value="selectedDate">
         </div>
         <div id="Address">
             <span>Адрес доставки</span>
@@ -24,6 +24,7 @@
             <EasyDataTable :headers="productsHeaders" :items="selectedProducts" @click-row="showRow" show-index/>
         </div>
         <input type="text" placeholder="Комментарий к заказу" @change="orderComment = $event.target.value" :value="orderComment">
+        <button @click="createOrder">Создать</button>
     </div>
 </template>
 
@@ -39,8 +40,9 @@ export default {
             selectedProduct: '',
             quantityOfProdcut: 0,
             selectedProducts: [],
-            productsHeaders: [{text: "Товар", value: "product"}, {text: "Кол-во", value: "quantity"}],
-            orderComment: ""
+            productsHeaders: [{text: "Товар", value: "productUID"}, {text: "Кол-во", value: "quantity"}],
+            orderComment: "",
+            selectedDate: new Date('1970-01-17')
         }
     },
     props: {
@@ -49,7 +51,7 @@ export default {
         addProductToSelected(){
             if(this.selectedProduct===''||this.quantityOfProdcut<=0){return}
             const { text: productName } = this.products.find((element) => element.value === this.selectedProduct)
-            this.selectedProducts.push({product: productName, quantity: this.quantityOfProdcut})
+            this.selectedProducts.push({productUID: productName, quantity: this.quantityOfProdcut})
             this.selectedProduct = ""
             this.quantityOfProdcut = 0
         },
@@ -64,7 +66,40 @@ export default {
                 }
             })
             return result
-        }
+        },
+        createOrder(){
+            if (this.$store.state.auth) {
+                const dataToCreateOrder = {}
+                dataToCreateOrder.addressUID = this.selectedAddress
+                dataToCreateOrder.date = this.selectedDate
+                dataToCreateOrder.comment = this.orderComment
+
+                let productsToSend = []
+                this.selectedProducts.forEach((selectedProductЕ) => {
+                    const { value: productUID } = this.products.find((element) => element.text === selectedProductЕ.productUID)
+                    productsToSend.push({productUID: productUID, quantity: selectedProductЕ.quantity})
+                })
+                
+                dataToCreateOrder.products = productsToSend
+                const uriAdresses = 'http://127.0.0.1:8000/orders'
+                const token = this.getCookie("token")
+
+                axios({
+                    method: "post",
+                    url: uriAdresses,
+                    data: dataToCreateOrder,
+                    headers: { Authorization: "Bearer " + token }
+                })
+                    .then(responce => { 
+
+                    })
+                    .catch((error) => {
+                        this.addresses = []
+                        this.selectedAddress = ''
+                        console.log("request error - address")
+                    })
+            }
+        },
     },
     mounted() {
         if (this.$store.state.auth) {
