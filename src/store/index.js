@@ -4,6 +4,7 @@ export default createStore({
   state: {
     auth: false,
     login: "",
+    partner: ""
   },
   getters: {
   },

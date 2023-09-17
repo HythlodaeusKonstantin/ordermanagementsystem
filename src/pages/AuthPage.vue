@@ -4,15 +4,18 @@
     <AuthValidation />
     <div class="home">
         <div v-show="!$store.state.auth">
-            <input type="text" placeholder="Введите логин" @input="login = $event.target.value" :value="login" v-on:keyup.enter="auth" />
+            <input type="text" placeholder="Введите логин" @input="login = $event.target.value" :value="login"
+                v-on:keyup.enter="auth" />
             <p></p>
-            <input type="text" placeholder="Введите пароль" @input="password = $event.target.value" :value="password" v-on:keyup.enter="auth" />
+            <input type="text" placeholder="Введите пароль" @input="password = $event.target.value" :value="password"
+                v-on:keyup.enter="auth" />
             <p></p>
             <button @click="auth">Войти</button>
         </div>
         <div v-show="$store.state.auth">
             <div>Вы авторизованы как {{ $store.state.login }}</div>
-            <button @click="exitFromSystem">Выйти</button>   
+            <div>Партнер: {{ $store.state.partner }}</div>
+            <button @click="exitFromSystem">Выйти</button>
         </div>
     </div>
 </template>
@@ -24,7 +27,7 @@ export default {
     data() {
         return {
             login: "",
-            password: ""
+            password: "",
         }
     },
     name: 'DesktopPage',
@@ -66,21 +69,39 @@ export default {
                 const dataSend = { login: this.login, password: this.password }
                 const uri = 'http://127.0.0.1:8000/token'
                 axios.post(uri, dataSend)
-                .then(responce => { 
-                    this.setCookie("token", JSON.parse(responce.data).accessToken), 
-                    this.setCookie("login", this.login), this.$store.state.auth=true, 
-                    this.$store.state.login = this.login
-                    this.$router.push({ path: "/desktop" })
-                }, 1)
-                .catch((error) => {
-                    this.exitFromSystem(), 
-                    this.$store.state.auth=false
-                    this.$store.state.login = ""
-                })
+                    .then(responce => {
+                        this.setCookie("token", JSON.parse(responce.data).accessToken),
+                            this.setCookie("login", this.login), this.$store.state.auth = true,
+                            this.$store.state.login = this.login
+                        this.$router.push({ path: "/desktop" })
+                    }, 1)
+                    .catch((error) => {
+                        this.exitFromSystem(),
+                            this.$store.state.auth = false
+                        this.$store.state.login = ""
+                    })
             }
         }
+    },
+    mounted() {
+        if (!this.$store.state.partner) {
+            const uri = 'http://127.0.0.1:8000/userinfo'
+            const token = this.getCookie("token")
+            axios.get(uri, { headers: { Authorization: "Bearer " + token } })
+                .then(responce => {
+                    const { data: responceData } = responce
+                    const OrdersData = JSON.parse(responceData)
+                    const { user, partner } = OrdersData
+                    this.$store.state.partner = partner
+                })
+                .catch((error) => {
+                        this.exitFromSystem(),
+                        this.$store.state.auth = false
+                        this.$store.state.login = ""
+                })
+            }
+    },
     }
-}
 
 </script>
   

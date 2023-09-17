@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <strong>Заказы на производство</strong>
+    <button>Создать заказ</button>
   </div>
   <EasyDataTable :headers="headers" :items="items" @click-row="showRow" show-index/>
   {{ $store.state.selectedOrderId }}
