@@ -1,10 +1,8 @@
 <template>
   <div class="home">
     <strong>Заказы на производство</strong>
-    <button>Создать заказ</button>
   </div>
   <EasyDataTable :headers="headers" :items="items" @click-row="showRow" show-index/>
-  {{ $store.state.selectedOrderId }}
 </template>
   
 <script>
@@ -23,7 +21,6 @@ export default {
   },
   methods: {
     showRow(item) {
-            //let id = this.itemsAll[item.indexInCurrentPage - 1].id
             let id = ''
             this.itemsAll.forEach((itemI) => {
               if(itemI.ЗаказНаПроизводство === item.ЗаказНаПроизводство){
@@ -56,8 +53,6 @@ export default {
           const { data: responceData } = responce
           const OrdersData = JSON.parse(responceData)
           const { columns, rows } = OrdersData
-          console.log(columns)
-          console.log(rows)
 
           let headersTemp = []
           let headersOnlyToShow = []

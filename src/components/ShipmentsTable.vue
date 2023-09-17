@@ -51,7 +51,7 @@ export default {
     filterShipmentsTable() {
       console.log(this.selectedOrderId)
       let itemsToShow = []
-      this.itemsAll.forEach((item) => {if (item.id === this.selectedOrderId) {itemsToShow.push(item)}})
+      this.itemsAll.forEach((item) => { if (item.id === this.selectedOrderId) { itemsToShow.push(item) } })
       this.items = itemsToShow
     }
   },
@@ -65,8 +65,6 @@ export default {
           const { data: responceData } = responce
           const OrdersData = JSON.parse(responceData)
           const { columns, rows } = OrdersData
-          console.log(columns)
-          console.log(rows)
 
           let headersTemp = []
           let headersOnlyToShow = []
@@ -88,4 +86,7 @@ export default {
   }
 }
 </script>
+
+<style>
+</style>
   
