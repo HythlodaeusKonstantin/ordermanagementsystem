@@ -10,7 +10,7 @@
             <input type="text" placeholder="Введите пароль" @input="password = $event.target.value" :value="password"
                 v-on:keyup.enter="auth" />
             <p></p>
-            <button @click="auth">Войти</button>
+            <button class="btn btn-outline-success" @click="auth">Войти</button>
         </div>
         <div v-show="$store.state.auth">
             <div>Вы авторизованы как {{ $store.state.login }}</div>
