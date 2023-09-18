@@ -1,4 +1,4 @@
-<template>
+<template >
   <nav>
     <router-link to="/">На главную</router-link> |
     <router-link to="/desktop">Рабочий стол</router-link> |
@@ -30,6 +30,6 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #2960b3;
 }
 </style>

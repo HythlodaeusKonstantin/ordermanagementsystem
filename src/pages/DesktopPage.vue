@@ -1,13 +1,15 @@
 <template>
   <AuthValidation />
-  <button @click="showDialog">Создать заказ</button>
+  <div class="container d-flex justify-content-end">
+    <button class="btn btn-outline-dark" @click="showDialog">Создать заказ</button>
+  </div>
   <OrdersTable v-if="!dialogVisible" @selected="ChangeSelectedOrderId" />
   <ShipmentsTable v-if="!dialogVisible" :selectedOrderId="selectedOrderId" />
   <div class="home">
   </div>
   <ModalDialog v-model:show=dialogVisible>
     <div>
-      <createOrderDialog></createOrderDialog>
+      <createOrderDialog v-model:show=dialogVisible></createOrderDialog>
     </div>
   </ModalDialog>
 </template>
@@ -38,10 +40,10 @@ export default {
     ChangeSelectedOrderId(id) {
       this.selectedOrderId = id
     },
-    showDialog(){
-      this.dialogVisible = true 
+    showDialog() {
+      this.dialogVisible = true
     }
-  }
+  },
 }
 </script>
   

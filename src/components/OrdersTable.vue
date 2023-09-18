@@ -46,7 +46,8 @@ export default {
   mounted() {
     console.log("Loading orders...")
     if (this.$store.state.auth) {
-      const uri = 'http://127.0.0.1:8000/orders'
+      const server = this.$store.state.APP_URL
+      const uri = server + '/orders'
       const token = this.getCookie("token")
       axios.get(uri, { headers: { Authorization: "Bearer " + token } })
         .then(responce => {

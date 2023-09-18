@@ -15,7 +15,7 @@
         <div v-show="$store.state.auth">
             <div>Вы авторизованы как {{ $store.state.login }}</div>
             <div>Партнер: {{ $store.state.partner }}</div>
-            <button @click="exitFromSystem">Выйти</button>
+            <button class="btn btn-outline-danger" @click="exitFromSystem">Выйти</button>
         </div>
     </div>
 </template>
@@ -67,7 +67,8 @@ export default {
         async auth() {
             if (this.login && this.password) {
                 const dataSend = { login: this.login, password: this.password }
-                const uri = 'http://127.0.0.1:8000/token'
+                const server = this.$store.state.APP_URL
+                const uri = server + '/token'
                 axios.post(uri, dataSend)
                     .then(responce => {
                         this.setCookie("token", JSON.parse(responce.data).accessToken),
@@ -85,7 +86,8 @@ export default {
     },
     mounted() {
         if (!this.$store.state.partner) {
-            const uri = 'http://127.0.0.1:8000/userinfo'
+            const server = this.$store.state.APP_URL
+            const uri = server + '/userinfo'
             const token = this.getCookie("token")
             axios.get(uri, { headers: { Authorization: "Bearer " + token } })
                 .then(responce => {
