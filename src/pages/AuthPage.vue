@@ -9,6 +9,8 @@
             <p></p>
             <input type="text" placeholder="Введите пароль" @input="password = $event.target.value" :value="password"
                 v-on:keyup.enter="auth" />
+            <h6 class="text-red" v-show="this.authError">Не верный логин или пароль</h6>
+            <h6 class="text-red" v-show="$store.state.authRequiredMessage">Пожалуйста, авторизуйтесь</h6>
             <p></p>
             <button class="btn btn-outline-success" @click="auth">Войти</button>
         </div>
@@ -28,6 +30,7 @@ export default {
         return {
             login: "",
             password: "",
+            authError: false,
         }
     },
     name: 'DesktopPage',
@@ -74,12 +77,15 @@ export default {
                         this.setCookie("token", JSON.parse(responce.data).accessToken),
                             this.setCookie("login", this.login), this.$store.state.auth = true,
                             this.$store.state.login = this.login
-                        this.$router.push({ path: "/desktop" })
+                            this.$router.push({ path: "/desktop" })
+                            this.$store.state.authRequiredMessage = false
                     }, 1)
                     .catch((error) => {
                         this.exitFromSystem(),
                             this.$store.state.auth = false
-                        this.$store.state.login = ""
+                            this.$store.state.login = ""
+                            console.log("Auth error")
+                            this.authError = true
                     })
             }
         }
@@ -95,6 +101,7 @@ export default {
                     const OrdersData = JSON.parse(responceData)
                     const { user, partner } = OrdersData
                     this.$store.state.partner = partner
+                    this.authError = false
                 })
                 .catch((error) => {
                         this.exitFromSystem(),
@@ -107,3 +114,11 @@ export default {
 
 </script>
   
+
+<style scoped>
+
+.text-red {
+    color: red;
+}
+
+</style>

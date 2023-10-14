@@ -39,7 +39,10 @@ export default {
         console.log("AuthValidation")
         const token = this.getCookie("token")
         const login = this.getCookie("login")
-        if (token === null || token === "null" || login === null || login === "null") { this.$router.push({ path: "/auth" }) }
+        if (token === null || token === "null" || login === null || login === "null") { 
+            this.$router.push({ path: "/auth" }) 
+            this.$store.state.authRequiredMessage = true
+        }
         else {
             this.$store.state.login = login
             this.$store.state.auth = true
