@@ -1,6 +1,6 @@
 <template >
   <nav>
-    <router-link to="/">На главную</router-link> |
+    <router-link to="/home">На главную</router-link> |
     <router-link to="/desktop">Рабочий стол</router-link> |
     <router-link to="/auth">Авторизация</router-link>
   </nav>

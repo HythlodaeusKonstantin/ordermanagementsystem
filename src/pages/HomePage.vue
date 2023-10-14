@@ -4,6 +4,7 @@
   </div>
   <div>
     <AddressesTable />
+    {{this.$route.path}}
   </div>
 </template>
   

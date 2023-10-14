@@ -4,8 +4,13 @@ import AuthPage from '../pages/AuthPage.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
+    component: HomePage
+  },
+  {
+    path: '/',
+    name: 'homeEmpty',
     component: HomePage
   },
   {

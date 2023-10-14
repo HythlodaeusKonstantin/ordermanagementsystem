@@ -41,7 +41,7 @@ export default {
         const login = this.getCookie("login")
         if (token === null || token === "null" || login === null || login === "null") { 
             this.$router.push({ path: "/auth" }) 
-            this.$store.state.authRequiredMessage = true
+            if (this.$route.path !== "/" && this.$route.path !== "/auth"){this.$store.state.authRequiredMessage = true}
         }
         else {
             this.$store.state.login = login
