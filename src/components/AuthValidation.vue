@@ -7,6 +7,7 @@
 export default {
     name: 'AuthValidation',
     methods: {
+        // Группа методов для работы с куками
         getCookie(name) {
             const cDecoded = decodeURIComponent(document.cookie)
             const cArray = cDecoded.split("; ")
@@ -29,13 +30,14 @@ export default {
         deleteCookie(name) {
             this.setCookie(name, null, null)
         },
-
+        // Очищаем куки
         exitFromSystem() {
             this.deleteCookie("login")
             this.deleteCookie("token")
         },
     },
     mounted() {
+        // т.к этот компонент вызывается на каждой странице, здесь мы каждый раз делаем проверку на валидность токена. Если токена в куках нет, редиректим на страницу авторизации
         console.log("AuthValidation")
         const token = this.getCookie("token")
         const login = this.getCookie("login")

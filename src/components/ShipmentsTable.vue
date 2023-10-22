@@ -28,6 +28,7 @@ export default {
   },
   watch:
   {
+    // При изменении выбранного заказа обновляем видимость расходных накладных - показываем только связанные с выбранным заказом
     selectedOrderId() {
       this.filterShipmentsTable()
     }
@@ -36,6 +37,7 @@ export default {
     showRow(item) {
       console.log(item)
     },
+    // Получаем куки
     getCookie(name) {
       const cDecoded = decodeURIComponent(document.cookie)
       const cArray = cDecoded.split("; ")
@@ -48,6 +50,7 @@ export default {
       })
       return result
     },
+    // Отображаем только расходные накладные с выбранным id заказа
     filterShipmentsTable() {
       console.log(this.selectedOrderId)
       let itemsToShow = []
@@ -56,6 +59,7 @@ export default {
     }
   },
   mounted() {
+    // При переключении на страницу подгружаем с сервера актуальный список расходных накладных
     console.log("Loading shipments...")
     if (this.$store.state.auth) {
       const server = this.$store.state.APP_URL

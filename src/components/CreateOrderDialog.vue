@@ -67,6 +67,7 @@ export default {
     props: {
     },
     methods: {
+        // Добавляем выбранную номенклатуру в создаваемый заказ
         addProductToSelected() {
             if (this.selectedProduct === '' || this.quantityOfProdcut <= 0) { return }
             const { text: productName } = this.products.find((element) => element.value === this.selectedProduct)
@@ -74,6 +75,7 @@ export default {
             this.selectedProduct = ""
             this.quantityOfProdcut = 0
         },
+        // Получаем куки
         getCookie(name) {
             const cDecoded = decodeURIComponent(document.cookie)
             const cArray = cDecoded.split("; ")
@@ -86,6 +88,7 @@ export default {
             })
             return result
         },
+        // Создаем новый заказ - вызываем post метод на сервере для создания заказа в 1С
         createOrder() {
             if (this.$store.state.auth) {
                 const dataToCreateOrder = {}
@@ -123,7 +126,7 @@ export default {
     },
     mounted() {
         if (this.$store.state.auth) {
-            // адреса
+            // При переключении на страницу, получаем список актуальных адресов доставки из 1С
             const server = this.$store.state.APP_URL
             const uriAdresses = server + '/address'
             const token = this.getCookie("token")
@@ -143,7 +146,7 @@ export default {
                     console.log("request error - address")
                 })
 
-            // номенклатура
+            // При переключении на страницу, получаем список актуальной номенклатуры
             const uriProducts = server + '/products'
             axios.get(uriProducts, { headers: { Authorization: "Bearer " + token } })
                 .then(responce => {

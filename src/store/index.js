@@ -5,8 +5,7 @@ export default createStore({
     auth: false,
     login: "",
     partner: "",
-    //APP_URL: "http://127.0.0.1:8000"
-    APP_URL: "https://mint-daily-longhorn.ngrok-free.app",
+    APP_URL: "https://mint-daily-longhorn.ngrok-free.app", // Использую ngrok как редирект на локальную машину, где запущен сервис на FastAPI
     authRequiredMessage: false,
   },
   getters: {

@@ -30,7 +30,7 @@ export default {
         return {
             login: "",
             password: "",
-            authError: false,
+            authError: false, // Используется для отображения "Не верный логин или пароль" при не успешной попытке авторизации
         }
     },
     name: 'DesktopPage',
@@ -38,6 +38,7 @@ export default {
         AuthValidation
     },
     methods: {
+        // Группа методов для работы с куками
         getCookie(name) {
             const cDecoded = decodeURIComponent(document.cookie)
             const cArray = cDecoded.split("; ")
@@ -61,12 +62,15 @@ export default {
             this.setCookie(name, null, null)
         },
 
+        // Очищаем куки, выходим из системы
         exitFromSystem() {
             this.$store.state.login = ""
             this.$store.state.auth = false
+            this.$store.state.partner = ""
             this.deleteCookie("login")
             this.deleteCookie("token")
         },
+        // Отправляем запрос на сервер для получения токена. Если все успешно, записываем логин и токен в куки и делаем редирект на страницу с "рабочим столом"
         async auth() {
             if (this.login && this.password) {
                 const dataSend = { login: this.login, password: this.password }
@@ -86,11 +90,13 @@ export default {
                             this.$store.state.login = ""
                             console.log("Auth error")
                             this.authError = true
+                            this.$store.state.authRequiredMessage = false
                     })
             }
         }
     },
     mounted() {
+        // При каждом переключении на страницу авторизации, отправляем GET запрос на сервер на актуализации данных о авторизованном пользователе
         if (!this.$store.state.partner) {
             const server = this.$store.state.APP_URL
             const uri = server + '/userinfo'

@@ -37,6 +37,7 @@ export default {
     createOrderDialog
   },
   methods: {
+    // Меняем id заказа на текущий выбранный
     ChangeSelectedOrderId(id) {
       this.selectedOrderId = id
     },

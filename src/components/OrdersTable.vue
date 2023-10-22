@@ -20,6 +20,7 @@ export default {
   components: {
   },
   methods: {
+    // Оповещаем родительский компонент о выбранном заказе
     showRow(item) {
             let id = ''
             this.itemsAll.forEach((itemI) => {
@@ -30,6 +31,7 @@ export default {
             )
             this.$emit('selected', id)
         },
+    // Получаем куки
     getCookie(name) {
       const cDecoded = decodeURIComponent(document.cookie)
       const cArray = cDecoded.split("; ")
@@ -44,6 +46,7 @@ export default {
     },
   },
   mounted() {
+    // При переключении на страницу через GET с сервера возвращаем актуальный список заказов
     console.log("Loading orders...")
     if (this.$store.state.auth) {
       const server = this.$store.state.APP_URL
